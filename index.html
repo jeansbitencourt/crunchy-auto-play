@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Crunchy Auto Play - Menu</title>
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+</head>
+<body>
+  <div id="topbar">
+    <h1>Crunchy Auto play</h1>
+  </div>
+  <section class="container">
+    <div class="item">
+      <button onclick="openCrunchy()">Abrir Crunchyroll</button>
+    </div>
+    <div class="item">
+      <input type="checkbox" id="autoNext" checked>
+      <span>Habilitar troca automática de episódio</span>
+    </div>
+    <div class="item">
+      <input type="number" id="timeToNext" value="24" max="200" min="1" style="width: 50px">
+      <span>Minutos para a troca automática de episódios</span>
+    </div>
+  </section>
+
+  <section class="container" style="margin-top: 80px">
+    <div class="item">
+      <span id="info">Informações de reprodução aparecerão aqui</span>
+    </div>
+  </section>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #000;
+    }
+
+    #topbar {
+      width: 100%;
+      text-align: center;
+      height: 80px;
+      background: #222;
+      color: #fff;
+      font-size: 1.5em;
+      padding-top: 12px;
+      overflow: hidden;
+      margin-bottom: 100px;
+    }
+
+    h1 {
+      font-size: 1.3em;
+      text-align: center;
+    }
+
+    .flex {
+      display: flex;
+    }
+
+    .flex-wrap {
+      flex-wrap: wrap;
+    }
+
+    .flex-item-1 {
+      flex: 1;
+    }
+
+    /* Flex Item */
+    .item {
+      margin: 5px;
+      background: #222;
+      text-align: center;
+      font-size: 1.5em;
+      padding: 10px 40px;
+      color: #ddd;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background: rgb(73, 75, 216);
+      padding: 10px 20px 10px 20px;
+      font-weight: bold;
+      color: #ddd;
+      border: none;
+      border-radius: 10px;
+    }
+
+    button, span, input {
+      font-size: 1em;
+    }
+
+    #info {
+      font-size: 0.8em;
+    }
+  </style>
+
+  <script>
+    const ipcRenderer = require('electron').ipcRenderer
+
+    openCrunchy = () => {
+      ipcRenderer.send('openPlayer', 'http://crunchyroll.com/pt-br/')
+    }
+
+    changeInfo = (text) => {
+      document.getElementById('info').innerText = text
+    }
+
+    ipcRenderer.on('showInfo', (event, arg) => {
+      changeInfo(arg)
+    })
+  </script>
+
+</body>
+</html>

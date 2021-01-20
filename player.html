@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Crunchy Auto Play - Player</title>
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+</head>
+<body>
+  <div id="loading">
+    <span>Por favor aguarde...</span>
+    <img src="./assets/loading.gif" alt="Loading">
+  </div>
+  <webview src="about:blank" preload="./preload.js"></webview>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #000;
+    }
+
+    webview {
+      width: 100%;
+      height: 100vh;
+      display: none;
+    }
+
+    #loading {
+      text-align: center;
+      width: 100%;
+      margin-top: 37vh;
+    }
+
+    #loading img {
+      padding: 10px;
+      border: none;
+      border-radius: 30px;
+      background: #ddd;
+      width: 150px;
+    }
+
+    #loading span {
+      display: block;
+      color: #fff;
+      font-size: 1.5em;
+      padding-bottom: 30px;
+    }
+  </style>
+
+  <script>
+    const ipcRenderer = require('electron').ipcRenderer
+
+    changeUrl = (url) => {
+      document.querySelector('webview').loadURL(url)
+      ipcRenderer.send('showPlayerInfo', `Carregando o endereço "${url}" no player!`)
+    }
+
+    ipcRenderer.on('loadURL', (event, arg) => {
+      changeUrl(arg)
+    })
+
+    onload = () => {
+      const webview = document.querySelector('webview')
+      const loading = document.getElementById('loading')
+  
+      const loadstart = () => {
+        loading.style.display = 'block'
+        webview.style.display = 'none'
+      }
+  
+      const loadstop = () => {
+        loading.style.display = 'none'
+        webview.style.display = 'flex'
+        ipcRenderer.send('showPlayerInfo', 'O player terminou de carregar a página')
+      }
+  
+      webview.addEventListener('did-start-loading', loadstart)
+      webview.addEventListener('did-stop-loading', loadstop)
+
+      webview.addEventListener('dom-ready', () => {
+        // webview.openDevTools()
+      })
+
+      webview.addEventListener('ipc-message', function (e) {
+        if (e.channel === 'html-content') {
+            var html_contents = e.args[0]
+            console.log(html_contents)
+        }
+
+        if (e.channel === 'show-info') {
+          ipcRenderer.send('showPlayerInfo', e.args[0])
+        }
+      })
+    }
+  </script>
+
+</body>
+</html>
