@@ -71,7 +71,6 @@
       const loadstop = () => {
         loading.style.display = 'none'
         webview.style.display = 'flex'
-        ipcRenderer.send('showPlayerInfo', 'O player terminou de carregar a página')
       }
   
       webview.addEventListener('did-start-loading', loadstart)

@@ -2,7 +2,7 @@ const ipcRenderer = require('electron').ipcRenderer
 document.addEventListener("DOMContentLoaded", function () {
     // ipcRenderer.sendToHost('html-content' , document.body.innerHTML)
 
-    ipcRenderer.sendToHost('show-info', 'teste')
+    ipcRenderer.sendToHost('show-info', `Exibindo a página "${document.title}"`)
 
     manipulatePlayer = () => {
       const player = document.getElementById('vilos-player')
