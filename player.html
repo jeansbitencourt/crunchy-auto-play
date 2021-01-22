@@ -72,6 +72,8 @@
         loading.style.display = 'none'
         webview.style.display = 'flex'
       }
+
+      function fmtMSS(s){return(s-(s%=60))/60+(9<s?':':':0')+s}
   
       webview.addEventListener('did-start-loading', loadstart)
       webview.addEventListener('did-stop-loading', loadstop)
@@ -82,8 +84,15 @@
 
       webview.addEventListener('ipc-message', function (e) {
         if (e.channel === 'html-content') {
-            var html_contents = e.args[0]
-            console.log(html_contents)
+          const episodeObj = e.args[0]
+          console.log(episodeObj)
+          ipcRenderer.send('showPlayerInfo', `
+            <div align="center">
+              <p>Reproduzindo episódio ${episodeObj.metadata.display_episode_number} - ${episodeObj.metadata.title}</p>
+              <img style="width: 380px" src="${episodeObj.thumbnail.url.replace(/['"]+/g, '')}" alt="${episodeObj.metadata.id}">  
+              <p>Duração: ${fmtMSS(episodeObj.metadata.duration.toString().substr(0, episodeObj.metadata.duration.toString().length -3))}</p>
+            </div>
+          `)
         }
 
         if (e.channel === 'show-info') {

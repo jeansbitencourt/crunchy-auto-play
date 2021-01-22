@@ -13,17 +13,17 @@
     <div class="item">
       <button onclick="openCrunchy()">Abrir Crunchyroll</button>
     </div>
-    <div class="item">
+    <!-- <div class="item">
       <input type="checkbox" id="autoNext" checked>
       <span>Habilitar troca automática de episódio</span>
     </div>
     <div class="item">
       <input type="number" id="timeToNext" value="24" max="200" min="1" style="width: 50px">
       <span>Minutos para a troca automática de episódios</span>
-    </div>
+    </div> -->
   </section>
 
-  <section class="container" style="margin-top: 80px">
+  <section class="container" style="margin-top: 25px">
     <div class="item">
       <span id="info">Informações de reprodução aparecerão aqui</span>
     </div>
@@ -45,7 +45,7 @@
       font-size: 1.5em;
       padding-top: 12px;
       overflow: hidden;
-      margin-bottom: 100px;
+      margin-bottom: 25px;
     }
 
     h1 {
@@ -107,7 +107,7 @@
     }
 
     changeInfo = (text) => {
-      document.getElementById('info').innerText = text
+      document.getElementById('info').innerHTML = text
     }
 
     ipcRenderer.on('showInfo', (event, arg) => {

@@ -17,6 +17,12 @@ document.addEventListener("DOMContentLoaded", function () {
         player.style.zIndex = 50000
         header.style.display = 'none'
         document.body.style.overflow = 'hidden'
+
+        const infos = document.body.innerHTML.split('vilos.config.media = ')[1].split(';')[0]
+        if (infos) {
+          ipcRenderer.sendToHost('html-content' ,  JSON.parse(infos))
+        }
+
       } else {
         setTimeout(() => {
           manipulatePlayer()
